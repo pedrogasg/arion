@@ -1,6 +1,10 @@
 #! /usr/bin/env python3
-from arion.camera import Camera
+import rospy
+from arion.stearing_node import StearingNode
 
 if __name__ == '__main__':
-    c = Camera()
-    c.start('my friend!')
+    try:
+        node = StearingNode()
+        node.run()
+    except rospy.ROSInterruptException:
+        pass
