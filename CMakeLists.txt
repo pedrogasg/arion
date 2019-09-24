@@ -10,5 +10,7 @@ catkin_package(
   CATKIN_DEPENDS message_runtime
 )
 
-catkin_install_python(PROGRAMS bin/predict_stearing
+catkin_install_python(PROGRAMS 
+  bin/predict_stearing
+  bin/send_odometry
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
