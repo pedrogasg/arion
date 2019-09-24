@@ -9,6 +9,9 @@ class VisionOdometer:
         self.odom = None
         self.odom_sub = rospy.Subscriber('/camera/odom/sample', Odometry, self.receive_pose)
 
+    def is_started(self):
+        return self.odom is not None
+
     def receive_pose(self, odom):
         with self.read_lock:
             self.odom = odom
