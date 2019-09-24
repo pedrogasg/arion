@@ -1,7 +1,7 @@
 import rospy
 from std_msgs.msg import Float32
-from camera import GStreamerCamera
-from prediction import CropResizedGradientLayer, Predictor
+from arion.camera import GStreamerCamera
+from arion.prediction import CropResizedGradientLayer, Predictor
 
 class StearingNode:
     def __init__(self):
@@ -15,7 +15,7 @@ class StearingNode:
 
     def run(self):
         rospy.init_node('prediction_test', anonymous=True, log_level= rospy.INFO)
-        r =rospy.Rate(30)
+        r =rospy.Rate(60)
         self.cam.start()
         while not rospy.is_shutdown():
             _, frame = self.cam.read()
@@ -23,4 +23,3 @@ class StearingNode:
             self.pub.publish(p)
             r.sleep()
         self.cam.stop()
-        self.cam.__exit__()

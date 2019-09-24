@@ -22,8 +22,8 @@ class GStreamerCamera:
         self.cap.set(var1, var2)
     
     def _gst_str(self):
-        return 'nvarguscamerasrc sensor-id=%d ! video/x-raw(memory:NVMM), width=%d, height=%d, format=(string)NV12, framerate=(fraction)%d/1 ! nvvidconv flip-method=(int)%d ! video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! videoconvert ! appsink' % (
-                self.src, self._DEFAULT_WIDTH_, self._DEFAULT_HEIGHT_, self._DEFAULT_RATE_, self.flip_mode, self.width, self.height)
+        return 'nvarguscamerasrc sensor-id=%d ! video/x-raw(memory:NVMM), width=%d, height=%d, format=(string)NV12, framerate=(fraction)%d/1 ! nvvidconv ! video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! videoconvert ! appsink' % (
+                self.src, self._DEFAULT_WIDTH_, self._DEFAULT_HEIGHT_, self._DEFAULT_RATE_, self.width, self.height)
 
     def start(self):
         if self.started:
@@ -32,7 +32,6 @@ class GStreamerCamera:
         self.started = True
         self.thread = threading.Thread(target=self.update, args=())
         self.thread.start()
-        return self
 
     def update(self):
         while self.started:
