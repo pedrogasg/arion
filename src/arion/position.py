@@ -15,7 +15,7 @@ class VisionOdometer:
 
     def read(self):
         with self.read_lock:
-            odom = deepcopy(odom)
+            odom = deepcopy(self.odom)
         return odom
 
 
