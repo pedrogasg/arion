@@ -8,7 +8,7 @@ class GStreamerCamera:
     _DEFAULT_WIDTH_ = 1280
     _DEFAULT_HEIGHT_ = 720
 
-    def __init__(self, src=0, width=410, height=308, flip_mode=1):
+    def __init__(self, src=0, width=410, height=308):
         self.src = src
         self.width = width
         self.height = height

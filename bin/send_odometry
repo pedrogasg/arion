@@ -1,0 +1,10 @@
+#! /usr/bin/env python3
+import rospy
+from arion.odometry_node import OdometryNode
+
+if __name__ == '__main__':
+    try:
+        node = OdometryNode()
+        node.run()
+    except rospy.ROSInterruptException:
+        pass
