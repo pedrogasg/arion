@@ -8,11 +8,11 @@ class SpeedControl:
         self.rc_in = rospy.Subscriber("mavros/rc/in", RCIn, self.update_speed, queue_size=1)
 
     def update_speed(self, rc):
-        throttle = msg.channels[8]
+        throttle = rc.channels[8]
         if throttle > 1000:
             throttle = (throttle / 2000.0) - 0.5
         else:
             throttle = 0
         
-        if throttle != self.trhottle:
+        if throttle != self.throttle:
             self.throttle = throttle
