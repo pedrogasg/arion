@@ -17,6 +17,8 @@ class GStreamerCamera:
         self.grabbed, self.frame = self.cap.read()
         self.started = False
         self.read_lock = threading.Lock()
+        self.center = (width / 2, height / 2)
+        self.M = cv2.getRotationMatrix2D(self.center, 180, 1.0)
 
     def set(self, var1, var2):
         self.cap.set(var1, var2)
@@ -44,7 +46,7 @@ class GStreamerCamera:
         with self.read_lock:
             frame = self.frame.copy()
             grabbed = self.grabbed
-        return grabbed, frame
+        return grabbed, cv2.warpAffine(frame, self.M, (self.width, self.height))
 
     def stop(self):
         self.started = False
