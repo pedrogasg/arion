@@ -12,7 +12,6 @@ class GStreamerCamera:
         self.src = src
         self.width = width
         self.height = height
-        self.flip_mode = flip_mode
         self.cap = cv2.VideoCapture(self._gst_str(), cv2.CAP_GSTREAMER)
         self.grabbed, self.frame = self.cap.read()
         self.started = False
@@ -46,6 +45,7 @@ class GStreamerCamera:
         with self.read_lock:
             frame = self.frame.copy()
             grabbed = self.grabbed
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         return grabbed, cv2.warpAffine(frame, self.M, (self.width, self.height))
 
     def stop(self):
