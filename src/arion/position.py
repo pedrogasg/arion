@@ -6,7 +6,7 @@ from nav_msgs.msg import Odometry
 class VisionOdometer:
     def __init__(self):
         self.read_lock = threading.Lock()
-        self.odom = None
+        self.odom = Odometry()
         self.odom_sub = rospy.Subscriber('/camera/odom/sample', Odometry, self.receive_pose)
 
     def is_started(self):
