@@ -10,12 +10,12 @@ class OdometryNode:
 
 
     def run(self):
-        r =rospy.Rate(40)
+        r =rospy.Rate(30)
 
         while not rospy.is_shutdown():
             odom = self.odometer.read()
             if odom is not None:
-                odom.header.frame_id = 'local_origin'
-                odom.child_frame_id = 'camera_downward'
+                rospy.loginfo(odom.header.frame_id)
+                rospy.loginfo(odom.child_frame_id)
                 self.pub.publish(odom)
             r.sleep()
