@@ -1,0 +1,21 @@
+<launch>
+
+    <arg name="input_topic" default="/camera/odom/sample"/>
+
+    <arg name="output_topic" default="/mavros/odometry/out"/>
+
+    <arg name="output_rate" default="30"/>
+
+    <node pkg="tf" type="static_transform_publisher" name="tf_baseLink_cameraPose"
+        args="0 0 0 0 1.5708 0 base_link camera_pose_frame 1000"/>
+
+    <node pkg="tf" type="static_transform_publisher" name="tf_odom_cameraOdom"
+    args="0 0 0 0 0 0 map camera_odom_frame 1000"/>
+
+    <node pkg="arion" type="send_odometry" name="arion_send_odometry" >
+        <rosparam param="input_topic" subst_value="True">$(arg input_topic)</rosparam>
+        <rosparam param="output_topic" subst_value="True">$(arg output_topic)</rosparam>
+        <rosparam param="output_rate" subst_value="True">$(arg output_rate)</rosparam>
+    </node>
+
+</launch>
