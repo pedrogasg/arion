@@ -26,6 +26,10 @@ class GStreamerCamera:
         return 'nvarguscamerasrc sensor-id=%d ! video/x-raw(memory:NVMM), width=%d, height=%d, format=(string)NV12, framerate=(fraction)%d/1 ! nvvidconv ! video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! videoconvert ! appsink' % (
                 self.src, self._DEFAULT_WIDTH_, self._DEFAULT_HEIGHT_, self._DEFAULT_RATE_, self.width, self.height)
 
+    @staticmethod
+    def encode_image(image):
+         return cv2.imencode('.jpg', image)
+
     def start(self):
         if self.started:
             rospy.loginfo('[!] Asynchroneous video capturing has already been started.')

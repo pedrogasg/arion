@@ -15,7 +15,7 @@ class ActuatorControlNode(YawControl, SpeedControl):
         self.start_stearing()
         
     def run(self):
-        rospy.init_node('control_test', anonymous=True, log_level= rospy.INFO)
+        rospy.init_node('control_arion', anonymous=True, log_level= rospy.INFO)
         r =rospy.Rate(240)
                            #    #    yaw            trhottle
         inputs = np.array((0.0, 0.0, self.stearing, self.throttle, 0.0, 0.0, 0.0, 0.0))

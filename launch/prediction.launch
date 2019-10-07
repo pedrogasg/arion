@@ -1,0 +1,13 @@
+<launch>
+    <arg name="prediction_out_topic" default="/arion/stearing"/>
+
+    <arg name="prediction_model_path" default="/home/jetson/test/cat_model5_s2_end.h5"/>
+
+    <arg name="prediction_rate" default="60"/>
+
+    <node pkg="arion" type="prediction_stearing" name="arion_prediction_stearing" >
+        <rosparam param="prediction_out_topic" subst_value="True">$(arg prediction_out_topic)</rosparam>
+        <rosparam param="prediction_model_path" subst_value="True">$(arg prediction_model_path)</rosparam>
+        <rosparam param="prediction_rate" subst_value="True">$(arg prediction_rate)</rosparam>
+    </node>
+</launch>

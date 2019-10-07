@@ -1,21 +1,28 @@
 <launch>
 
-    <arg name="input_topic" default="/camera/odom/sample"/>
+    <arg name="odom_in_topic" default="/camera/odom/sample"/>
 
-    <arg name="output_topic" default="/mavros/odometry/out"/>
+    <arg name="odom_out_topic" default="/mavros/odometry/out"/>
 
-    <arg name="output_rate" default="30"/>
-
+    <!-- Launch static transform publishers -->
     <node pkg="tf" type="static_transform_publisher" name="tf_baseLink_cameraPose"
-        args="0 0 0 0 1.5708 0 base_link camera_pose_frame 1000"/>
+        args="0 0 0 0 0 0 base_link camera_pose_frame 1000"/>
 
+    <!-- Launch static transform publishers -->
     <node pkg="tf" type="static_transform_publisher" name="tf_odom_cameraOdom"
-    args="0 0 0 0 0 0 map camera_odom_frame 1000"/>
+        args="0 0 0 1.5708 0 0 odom camera_odom_frame 1000"/>
 
-    <node pkg="arion" type="send_odometry" name="arion_send_odometry" >
-        <rosparam param="input_topic" subst_value="True">$(arg input_topic)</rosparam>
-        <rosparam param="output_topic" subst_value="True">$(arg output_topic)</rosparam>
-        <rosparam param="output_rate" subst_value="True">$(arg output_rate)</rosparam>
+    <!-- Throttle odometry messages to a fixed rate around 25Hz -->
+    <node name="odom_throttler" type="drop" pkg="topic_tools" 
+    args="$(arg odom_in_topic) 7 8 $(arg odom_out_topic)" >
     </node>
+
+    <!-- Launch Realsense Camera -->
+    <include file="$(find realsense2_camera)/launch/rs_t265.launch" >
+        <arg name="enable_gyro"              value="false"/>
+        <arg name="enable_accel"             value="false"/>
+        <arg name="publish_odom_tf"          value="false"/>
+    </include>
+
 
 </launch>

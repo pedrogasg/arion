@@ -36,7 +36,7 @@ class NavPath:
 
 class VisualiZationNode:
     def __init__(self):
-        rospy.init_node('visualization_test', anonymous=True, log_level= rospy.INFO)
+        rospy.init_node('visualization_arion', anonymous=True, log_level= rospy.INFO)
         self.nav_path = NavPath(0.3)
         self.pub = rospy.Publisher('arion/visualization_marker', Marker, queue_size=5)
         self.sub =rospy.Subscriber('/mavros/odometry/in', Odometry, self.nav_path.callback)

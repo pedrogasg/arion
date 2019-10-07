@@ -1,0 +1,11 @@
+<launch>
+    <arg name="camera_out_topic" default="/arion/image_compressed"/>
+
+
+    <arg name="camera_rate" default="60"/>
+
+    <node pkg="arion" type="camera" name="arion_camera" >
+        <rosparam param="camera_out_topic" subst_value="True">$(arg camera_out_topic)</rosparam>
+        <rosparam param="camera_rate" subst_value="True">$(arg camera_rate)</rosparam>
+    </node>
+</launch>
