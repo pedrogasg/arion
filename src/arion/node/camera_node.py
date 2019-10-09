@@ -9,9 +9,10 @@ class CameraNode:
 
         rospy.init_node('camera_arion', anonymous=True, log_level= rospy.INFO)
         topic_out = rospy.get_param('~camera_out_topic', '/arion/image_compressed')
-        
+        width = rospy.get_param('~camera_witdh', 410)
+        height = rospy.get_param('~camera_height', 308)
         self.rate = rospy.get_param('~camera_rate', 30)
-        self.cam = GStreamerCamera(src=0, width=410, height=308)
+        self.cam = GStreamerCamera(src=0, width=width, height=height)
         self.pub = rospy.Publisher(topic_out, CompressedImage, queue_size=1)
 
 
