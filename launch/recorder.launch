@@ -1,5 +1,5 @@
 <launch>
-    <arg name="now" value="`date +'%Y-%m-%d-%H-%M-%S'`" />
+    <arg name="now" default="" />
     <arg name="rosbag_dir" default="/home/jetson/data"/>
      <arg name="camera_out_topic" value="/arion/image_compressed"/>
     <arg name="fcu_url" default="/dev/ttyTHS1:921600"/>
