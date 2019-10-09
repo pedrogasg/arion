@@ -23,7 +23,7 @@
     </include>
 
   <!-- Record camera -->
-    <node pkg="rosbag" type="record" name="rc_recorder" output="screen" args="-O $(arg rosbag_dir)/camera-$(arg now).bag $(arg camera_out_topic)"/ >
+    <node pkg="rosbag" type="record" name="rc_recorder" output="screen" args="-O $(arg rosbag_dir)/camera-$(arg now).bag $(arg camera_out_topic)" />
 
 
 
