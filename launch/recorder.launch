@@ -12,7 +12,7 @@
     </include>
 
   <!-- Record mavros rc in -->
-    <node pkg="rosbag" type="record" name="bag_recorder" output="screen"
+    <node pkg="rosbag" type="record" name="camera_recorder" output="screen"
         args="-O $(arg rosbag_dir)/rc-$(arg now).bag /mavros/rc/in"/>
 
   <!-- Launch camera -->
@@ -24,7 +24,7 @@
     </include>
 
   <!-- Record camera -->
-    <node pkg="rosbag" type="record" name="bag_recorder" output="screen"
+    <node pkg="rosbag" type="record" name="rc_recorder" output="screen"
         args="-O $(arg rosbag_dir)/camera-$(arg now).bag $(arg camera_out_topic)"/>
 
 
