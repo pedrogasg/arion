@@ -23,7 +23,7 @@ class GStreamerCamera:
         self.cap.set(var1, var2)
     
     def _gst_str(self):
-        return 'nvarguscamerasrc sensor-id=%d ! video/x-raw(memory:NVMM), width=%d, height=%d, format=(string)NV12, framerate=(fraction)%d/1 ! nvvidconv ! video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! videoconvert ! appsink' % (
+        return 'nvarguscamerasrc sensor-id=%d ! video/x-raw(memory:NVMM), width=(int)%d, height=(int)%d,format=(string)NV12, framerate=(fraction)%d/1 ! nvvidconv ! video/x-raw,  width=(int)%d, height=(int)%d, format=(string)BGRx ! videoconvert  ! video/x-raw, format=(string)BGR ! appsink' % (
                 self.src, self._DEFAULT_WIDTH_, self._DEFAULT_HEIGHT_, self._DEFAULT_RATE_, self.width, self.height)
 
     @staticmethod

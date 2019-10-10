@@ -23,9 +23,12 @@ CAL_MAG_EN1
 sudo chmod 666 /dev/ttyTHS1
 
 nohup roslaunch mavros px4.launch fcu_url:=/dev/ttyTHS1:921600 gcs_url:=udp://@192.168.1.48 &>/dev/null &
+sudo chmod 666 /dev/ttyTHS1
+NOW=`date +%d-%m-%Y_%I-%M-%S`
+nohup roslaunch arion recorder.launch now:=$NOW & 
 
 docker rm mavros  
 docker run --name mavros -v /Users/az02290/btf/files4:/mnt/files:rw -it px4io/px4-dev-ros-melodic 
 pip install jsonlines
-python export_images.py ./camera-10-10-2019_12-01-15.bag ./images /arion/image_compressed --i
-python export_rc_in.py ./rc-10-10-2019_12-01-15.bag ./rc /mavros/rc/in
+python export_images.py ./camera-10-10-2019_12-58-05.bag ./images /arion/image_compressed --i
+python export_rc_in.py ./rc-10-10-2019_12-58-05.bag ./rc /mavros/rc/in
