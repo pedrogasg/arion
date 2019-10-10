@@ -11,7 +11,7 @@ class CameraNode:
         topic_out = rospy.get_param('~camera_out_topic', '/arion/image_compressed')
         width = rospy.get_param('~camera_witdh', 320)
         height = rospy.get_param('~camera_height', 180)
-        self.rate = rospy.get_param('~camera_rate', 30)
+        rate = rospy.get_param('~camera_rate', 30)
         self.cam = GStreamerCamera(src=0, width=width, height=height, rate=rate)
         self.pub = rospy.Publisher(topic_out, CompressedImage, queue_size=1)
 
