@@ -2,8 +2,6 @@
     <arg name="now" default="" />
     <arg name="rosbag_dir" default="/home/jetson/data" />
     <arg name="camera_out_topic" value="/arion/image_compressed" />
-    <arg name="fcu_url" default="/dev/ttyTHS1:921600" />
-    <arg name="gcs_url" default="udp://@192.168.1.48" />   <!-- GCS link is provided by SITL -->
 
   <!-- Launch camera -->
     <include file="$(find arion)/launch/camera.launch" >
@@ -15,7 +13,5 @@
 
   <!-- Record camera -->
     <node pkg="rosbag" type="record" name="rc_recorder" output="screen" args="-O $(arg rosbag_dir)/camera-$(arg now).bag $(arg camera_out_topic)" />
-
-
 
 </launch>

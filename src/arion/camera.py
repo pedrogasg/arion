@@ -50,7 +50,8 @@ class GStreamerCamera:
             frame = self.frame.copy()
             grabbed = self.grabbed
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        return grabbed, cv2.warpAffine(frame, self.M, (self.width, self.height))
+        #invert image cv2.warpAffine(frame, self.M, (self.width, self.height))
+        return grabbed, frame
 
     def stop(self):
         self.started = False

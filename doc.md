@@ -28,7 +28,9 @@ NOW=`date +%d-%m-%Y_%I-%M-%S`
 nohup roslaunch arion recorder.launch now:=$NOW & 
 
 docker rm mavros  
-docker run --name mavros -v /Users/az02290/btf/files4:/mnt/files:rw -it px4io/px4-dev-ros-melodic 
+docker run --name mavros -v /Users/az02290/arion/data:/mnt/files:rw -it px4io/px4-dev-ros-melodic 
+cd /mnt/files
 pip install jsonlines
+source /opt/ros/melodic/setup.bash
 python export_images.py ./camera-10-10-2019_12-58-05.bag ./images /arion/image_compressed --i
 python export_rc_in.py ./rc-10-10-2019_12-58-05.bag ./rc /mavros/rc/in
