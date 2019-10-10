@@ -19,7 +19,7 @@ class GStreamerCamera(traitlets.HasTraits):
 
     @staticmethod
     def encode_image(image):
-        return bytes(cv2.imencode('.jpg', value)[1])
+        return bytes(cv2.imencode('.jpg', image)[1])
     
     def __init__(self, *args, **kwargs):
         super(GStreamerCamera, self).__init__(*args, **kwargs)
