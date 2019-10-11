@@ -9,6 +9,16 @@
 
     <arg name="prediction_height" value="180"/>
 
+    <arg name="fcu_url" default="/dev/ttyTHS1:921600" />
+
+    <arg name="gcs_url" default="udp://@192.168.1.48" />  
+
+  <!-- Launch MavROS -->
+    <include file="$(find mavros)/launch/px4.launch">
+        <arg name="fcu_url" value="$(arg fcu_url)" />
+        <arg name="gcs_url" value="$(arg gcs_url)" />
+    </include>
+
     <node pkg="arion" type="prediction_stearing" name="arion_prediction_stearing" >
         <rosparam param="prediction_out_topic" subst_value="True">$(arg prediction_out_topic)</rosparam>
         <rosparam param="prediction_model_path" subst_value="True">$(arg prediction_model_path)</rosparam>
@@ -17,5 +27,5 @@
         <rosparam param="prediction_height" subst_value="True">$(arg prediction_height)</rosparam>
     </node>
 
-    <node pkg="arion" type="move_actuator" name="arion_avtuator" />
+    <node pkg="arion" type="move_actuator" name="arion_actuator" />
 </launch>
