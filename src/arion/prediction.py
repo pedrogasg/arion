@@ -23,8 +23,8 @@ class CropResizedGradientLayer(Layer):
         return x
 
 class Predictor:
-    def __init__(self, model_path, classes_num, custom_objects):
-        self.model = tf.keras.models.load_model(model_path, custom_objects=custom_objects)
+    def __init__(self, model_path, classes_num):
+        self.model = tf.keras.models.load_model(model_path)
         self.classes_num = classes_num
 
     def call(self, frame):
