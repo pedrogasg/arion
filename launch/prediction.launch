@@ -1,7 +1,7 @@
 <launch>
     <arg name="prediction_out_topic" default="/arion/stearing"/>
 
-    <arg name="prediction_model_path" default="/home/jetson/models/cat_model1_68.h5"/>
+    <arg name="prediction_model_path" default="/home/jetson/models/cat_model1.h5"/>
 
     <arg name="prediction_rate" default="60"/>
 
