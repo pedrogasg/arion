@@ -1,4 +1,5 @@
 import rospy
+import numpy as np
 from std_msgs.msg import Float32
 from arion.camera import GStreamerCamera
 from arion.prediction import CropResizedGradientLayer, Predictor
@@ -16,20 +17,23 @@ class StearingNode:
         self.model = Predictor(model_path, 9)
         self.pub = rospy.Publisher(topic_out, Float32, queue_size=1)
         self.predicting = False
+        self.frame = np.empty((self.height, self.width, 3), dtype=np.uint8)
 
     def update_image(self, change):
         if self.predicting:
             return
-        self.predicting = True    
-        p = self.model.call(change['new'])
-        self.predicting = False
-        self.pub.publish(p)
+        self.frame = change['new'].copy()
+
 
     def run(self):
         self.cam.running = True
         self.cam.observe(self.update_image, names='value')
-        rospy.spin()
+        r =rospy.Rate(30)
+        while not rospy.is_shutdown():
+            self.predicting = True    
+            p = self.model.call(self.frame)
+            self.predicting = False
+            self.pub.publish(p)
+            r.sleep()
+            
         self.cam.running = False
-        r =rospy.Rate(self.rate)
-        self.cam.start()
-        self.cam.stop()
