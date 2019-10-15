@@ -11,30 +11,36 @@ class OffboardControl:
         set_mode()    
 
     def offboard(self):
-        return set_mode('OFFBOARD')
+        return self.set_mode('OFFBOARD')
 
     def set_mode(self, mode="MANUAL"):
         if self.flightModeService(custom_mode=mode):
+            rospy.loginfo("Vehicle is now in %s mode" %mode)
             return True
         else:
-            print("Vechile %s failed" %mode)
+            rospy.loginfo("Vehicle %s failed" %mode)
             return False
 
     def arm(self):
         if self.armService(True):
+            rospy.loginfo("Vehicle is now armed!")
             return True
         else:
-            print("Vehicle arming failed!")
+            rospy.loginfo("Vehicle arming failed!")
             return False
 
     def disarm(self):
         if self.armService(False):
+            rospy.loginfo("Vehicle disarmed!")
             return True
         else:
-            print("Vehicle disarming failed!")
+            rospy.loginfo("Vehicle disarming failed!")
             return False
     
     def take_control(self, callback):
+        callback()
+        callback()
+        callback()
         callback()
         while not self.arm() and not self.offboard():
             callback()
