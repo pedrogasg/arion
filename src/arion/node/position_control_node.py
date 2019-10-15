@@ -30,4 +30,4 @@ class PositionControlNode(OffboardControl):
 
         self.take_control(lambda: self.publish_position_message(0,0,0,0))
         rospy.spin()
-        self.take_control(lambda: self.publish_position_message(0,0,0,0))
+        self.release_control(lambda: self.publish_position_message(0,0,0,0))

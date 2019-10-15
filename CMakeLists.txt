@@ -12,6 +12,8 @@ catkin_package(
 
 catkin_install_python(PROGRAMS 
   bin/predict_stearing
-  bin/send_odometry
+  bin/move_position
+  bin/camera
+  bin/path_viz
   bin/move_actuator
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

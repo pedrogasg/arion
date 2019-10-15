@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 import rospy
-from arion.node.postion_control_node import PositionControlNode
+from arion.node.position_control_node import PositionControlNode
 
 if __name__ == '__main__':
     try:

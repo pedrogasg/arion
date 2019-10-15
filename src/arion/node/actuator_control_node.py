@@ -2,6 +2,7 @@ import rospy
 import numpy as np
 from arion.yaw_control import YawControl
 from arion.speed_control import SpeedControl
+from arion.offboard import OffboardControl
 from mavros_msgs.msg import ActuatorControl
 
 class ActuatorControlNode(OffboardControl, YawControl, SpeedControl):

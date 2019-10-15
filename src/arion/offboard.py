@@ -35,11 +35,13 @@ class OffboardControl:
             return False
     
     def take_control(self, callback):
+        callback()
         while not self.arm() and not self.offboard():
             callback()
             time.sleep(0.2)
 
     def release_control(self, callback):
+        callback()
         while not self.disarm() and not self.manual():
             callback()
             time.sleep(0.2)
