@@ -28,6 +28,8 @@ class PositionControlNode(OffboardControl):
     def run(self):
         rospy.init_node('control_arion', anonymous=True, log_level= rospy.INFO)
 
-        self.take_control(lambda: self.publish_position_message(0,0,0,0))
-        rospy.spin()
-        self.release_control(lambda: self.publish_position_message(0,0,0,0))
+        #self.take_control(lambda: self.publish_position_message(0,0,0,0))
+        while not rospy.is_shutdown():
+            self.publish_position_message(0,0,0,0)
+            r.sleep()
+        #self.release_control(lambda: self.publish_position_message(0,0,0,0))
