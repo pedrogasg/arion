@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import rospy
-from arion.yaw_control import OffboardControl
+from arion.offboard import OffboardControl
 from mavros_msgs.msg import PositionTarget
 
 class PositionControlNode(OffboardControl):
