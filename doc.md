@@ -35,3 +35,6 @@ pip install jsonlines
 source /opt/ros/melodic/setup.bash
 python export_images.py ./camera-10-10-2019_12-58-05.bag ./images /arion/image_compressed --i
 python export_rc_in.py ./rc-10-10-2019_10-10-51.bag ./rc /mavros/rc/in
+
+
+rover_pos_control stop

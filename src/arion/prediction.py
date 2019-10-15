@@ -29,4 +29,6 @@ class Predictor:
 
     def call(self, frame):
         prediction = self.model.predict(frame.reshape((-1,) + frame.shape))
-        return np.argmax(prediction[0]) / self.classes_num
+        p = np.argmax(prediction[0]) / self.classes_num
+        p = (p * 2) - 1
+        return p

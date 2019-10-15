@@ -1,0 +1,10 @@
+#! /usr/bin/env python3
+import rospy
+from arion.node.actuator_control_node import ActuatorControlNode
+
+if __name__ == '__main__':
+    try:
+        node = ActuatorControlNode()
+        node.run()
+    except rospy.ROSInterruptException:
+        pass

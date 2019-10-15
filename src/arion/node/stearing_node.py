@@ -17,7 +17,7 @@ class StearingNode:
         self.model = Predictor(model_path, 9)
         self.pub = rospy.Publisher(topic_out, Float32, queue_size=1)
         self.predicting = False
-        self.frame = np.empty((self.height, self.width, 3), dtype=np.uint8)
+        self.frame = np.empty((height, width, 3), dtype=np.uint8)
 
     def update_image(self, change):
         if self.predicting:
@@ -35,5 +35,5 @@ class StearingNode:
             self.predicting = False
             self.pub.publish(p)
             r.sleep()
-            
+
         self.cam.running = False

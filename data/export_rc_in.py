@@ -16,7 +16,7 @@ def main():
     parser.add_argument("rc_topic", help="rc topic topic.")
     args = parser.parse_args()
 
-    print "Extract images from %s on topic %s into %s" % (args.bag_file,
+    print "Extract rc from %s on topic %s into %s" % (args.bag_file,
                                                           args.rc_topic, args.output_dir)
 
     bag = rosbag.Bag(args.bag_file, "r")
