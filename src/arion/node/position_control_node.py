@@ -21,8 +21,8 @@ class PositionControlNode(OffboardControl):
                                     + PositionTarget.FORCE
         self.position_target_message.coordinate_frame = PositionTarget.FRAME_BODY_OFFSET_NED
         self.message_pub.publish(self.position_target_message)
-        target_raw_pose.yaw = yaw
-        target_raw_pose.yaw_rate = yaw_rate
+        self.position_target_message.yaw = yaw
+        self.position_target_message.yaw_rate = yaw_rate
         self.seq = self.seq + 1
         
     def run(self):
