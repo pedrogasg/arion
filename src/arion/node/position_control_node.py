@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import rospy
 from arion.offboard import OffboardControl
-from mavros_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import Point
 
 class PositionControlNode(OffboardControl):
