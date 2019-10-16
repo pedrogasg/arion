@@ -20,9 +20,9 @@ class PositionControlNode(OffboardControl):
 
     def publish_position_message(self, x, y, z):
         self.go_to_pose.header.stamp = rospy.Time.now()
-        self.go_to_pose.position.x = x
-        self.go_to_pose.position.y = y
-        self.go_to_pose.position.y = z
+        self.go_to_pose.pose.position.x = x
+        self.go_to_pose.pose.position.y = y
+        self.go_to_pose.pose.position.y = z
         self.message_pub.publish(self.go_to_pose)
         self.seq = self.seq + 1
 
@@ -37,7 +37,7 @@ class PositionControlNode(OffboardControl):
 
     def warm_position(self, rate):
          for i in range(100):
-             p = self.current_poste.position
+             p = self.current_poste.pose.position
              self.x = smooth(self.x, p.x, self.smooth_factor)
              self.y = smooth(self.y, p.y, self.smooth_factor)
              self.z = smooth(self.z, p.z, self.smooth_factor)
