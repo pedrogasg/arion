@@ -18,7 +18,7 @@ class PositionControlNode(OffboardControl):
         self.y = 0.0
         self.z = 0.0
 
-    def publish_position_message(self, x, y, z, mask):
+    def publish_position_message(self, x, y, z):
         self.goto_target.header.stamp = rospy.Time.now()
         self.goto_target.header.seq = self.seq
         self.goto_target.pose.position.x = x
@@ -31,7 +31,7 @@ class PositionControlNode(OffboardControl):
         self.current_poste = msg
 
     def position_publish(self):
-        self.publish_position_message(self.x, self.y, self.z, self.mask)
+        self.publish_position_message(self.x, self.y, self.z)
 
     @staticmethod
     def smooth(now, prev, factor):
