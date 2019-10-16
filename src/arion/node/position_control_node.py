@@ -7,7 +7,7 @@ from mavros_msgs.msg import PositionTarget
 class PositionControlNode(OffboardControl):
 
     def __init__(self):
-        self.message_pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=10)
+        self.message_pub = rospy.Publisher('mavros/setpoint_raw/local', PositionTarget, queue_size=10)
         self.message_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.position_callback)
         self.goto_target = PositionTarget()
         self.current_poste = PoseStamped()
@@ -37,7 +37,7 @@ class PositionControlNode(OffboardControl):
         self.current_poste = msg
 
     def position_publish(self):
-        self.publish_position_message(self.x, self.y, self.z)
+        self.publish_position_message(self.x, self.y, self.z, self.mask)
 
     @staticmethod
     def smooth(now, prev, factor):
