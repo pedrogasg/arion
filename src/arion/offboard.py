@@ -39,15 +39,19 @@ class OffboardControl:
             return False
     
     def take_control(self, callback):
-        for i in range(10):
-            callback()
-            self.arm()
-            self.offboard()
-            rospy.loginfo("%d" % i)
-            time.sleep(0.2)
+        r = rospy.Rate(20)
+        while not rospy.is_shutdown():
+            if callback is not None:
+                callback()
+            armed = self.arm()
+            offboard = self.offboard()
+            if armed and offboard:
+                rospy.loginfo("Control taked by CCU")
+                return True
+            r.sleep()
 
-    def release_control(self, callback):
-        callback()
-        while not self.disarm() and not self.manual():
+    def release_control(self, callback = None):
+        if callback is not None:
             callback()
-            time.sleep(0.2)
+        self.disarm()
+        self.manual()

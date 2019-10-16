@@ -1,35 +1,55 @@
 #!/usr/bin/env python3
 import rospy
 from arion.offboard import OffboardControl
-from mavros_msgs.msg import PositionTarget
+from mavros_msgs.msg import PoseStamped
+from geometry_msgs.msg import Point
 
 class PositionControlNode(OffboardControl):
 
     def __init__(self):
-        self.message_pub = rospy.Publisher('mavros/setpoint_raw/local', PositionTarget, queue_size=1)
-        self.position_target_message = PositionTarget()
+        self.message_pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=10)
+        self.message_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.position_callback)
+        self.go_to_pose = PoseStamped()
+        self.current_poste = PoseStamped()
         self.seq = 0
         self.start_offboard()
+        self.smooth_factor = 0.9
+        self.x = 0.0
+        self.y = 0.0
+        self.z = 0.0
 
-    def publish_position_message(self, x, y, z, yaw, yaw_rate=1):
-        self.position_target_message.header.stamp = rospy.Time.now()
-        self.position_target_message.position.x = x
-        self.position_target_message.position.y = y
-        self.position_target_message.position.z = z
-        self.position_target_message.type_mask = PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
-                                    + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
-                                    + PositionTarget.FORCE
-        self.position_target_message.coordinate_frame = PositionTarget.FRAME_BODY_OFFSET_NED
-        self.message_pub.publish(self.position_target_message)
-        self.position_target_message.yaw = yaw
-        self.position_target_message.yaw_rate = yaw_rate
+    def publish_position_message(self, x, y, z):
+        self.go_to_pose.header.stamp = rospy.Time.now()
+        self.go_to_pose.position.x = x
+        self.go_to_pose.position.y = y
+        self.go_to_pose.position.y = z
+        self.message_pub.publish(self.go_to_pose)
         self.seq = self.seq + 1
+
+    def position_callback(self, msg):
+        self.current_poste = msg
+
+    def position_publish():
+        self.publish_position_message(self.x, self.y, self.z)
+
+    def smooth(now, prev, factor):
+        return factor * now + (1.0 - factor) * prev
+
+    def warm_position(self, rate):
+         for i in range(100):
+             p = self.current_poste.position
+             self.x = smooth(self.x, p.x, self.smooth_factor)
+             self.y = smooth(self.y, p.y, self.smooth_factor)
+             self.z = smooth(self.z, p.z, self.smooth_factor)
+             self.position_publish()
+             rate.sleep()
         
     def run(self):
         rospy.init_node('control_arion', anonymous=True, log_level= rospy.INFO)
-
-        #self.take_control(lambda: self.publish_position_message(0,0,0,0))
+        r = rospy.Rate(20)
+        self.warm_position(r)
+        self.take_control(self.position_publish)
         while not rospy.is_shutdown():
-            self.publish_position_message(0,0,0,0)
+            self.position_publish()
             r.sleep()
-        #self.release_control(lambda: self.publish_position_message(0,0,0,0))
+        self.release_control()

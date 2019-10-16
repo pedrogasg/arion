@@ -49,8 +49,8 @@ class OpenMVCam:
             #ignore exception on read (better to log)
             pass 
     
-        odom_x, odom_y = map(float,msg.split(';'))
-        return odom_x,odom_y
+        v_x, v_y, d_x, d_v = map(float,msg.split(';'))
+        return v_x, v_y, d_x, d_v
 
 
 """Publishes OpenMV Cam images as ROS messages."""
@@ -78,9 +78,10 @@ class OpenMVCamNode:
 
         # Read image from camera
         odom = self.openmv_cam.read_odom()
-        rospy.loginfo("{ x : %d , y : %d }" % (odom[0], odom[1])
-
-
+        rospy.loginfo("{ vx : %d , vy : %d, dx : %d, dy : %d }" % (odom[0], odom[1], odom[2], odom[3]))
+        
+        
+        
 def main():
 
     openmv_cam_node = OpenMVCamNode()
