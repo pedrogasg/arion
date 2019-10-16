@@ -29,7 +29,7 @@ class PositionControlNode(OffboardControl):
     def position_callback(self, msg):
         self.current_poste = msg
 
-    def position_publish():
+    def position_publish(self):
         self.publish_position_message(self.x, self.y, self.z)
 
     @staticmethod
