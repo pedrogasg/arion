@@ -1,0 +1,94 @@
+#! /usr/bin/env python3
+"""Reads images from OpenMV Cam serial port.
+
+Source:
+    https://github.com/openmv/openmv/blob/master/scripts/examples/02-Board-Control/usb_vcp.py
+"""
+
+import io
+import struct
+
+import serial
+
+
+class OpenMVCam:
+
+    def __init__(self, device='/dev/ttyACM0'):
+        """Reads odometry from OpenMV Cam
+
+        Args:
+            device (str): Serial device
+
+        Raises:
+            serial.SerialException
+
+        """
+        self.port = serial.Serial(device, baudrate=115200,
+                                  bytesize=serial.EIGHTBITS,
+                                  parity=serial.PARITY_NONE,
+                                  xonxoff=False, rtscts=False,
+                                  stopbits=serial.STOPBITS_ONE,
+                                  timeout=None, dsrdtr=True)
+
+        # Important: reset buffers for reliabile restarts of OpenMV Cam
+        self.port.reset_input_buffer()
+        self.port.reset_output_buffer()
+
+    def read_odom(self):
+        """Read odometry from OpenMV Cam
+
+        Returns:
+            odom x, odom y tupple
+
+        Raises:
+            serial.SerialException
+        """
+        try:
+            msg=self.port.readline().decode('utf-8').strip()
+        except:
+            #ignore exception on read (better to log)
+            pass 
+    
+        odom_x, odom_y = map(float,msg.split(';'))
+        return odom_x,odom_y
+
+
+"""Publishes OpenMV Cam images as ROS messages."""
+
+import sys
+
+import rospy
+import json
+
+CAMERA_NAME = 'openmv_cam'
+DEFAULT_ODOM_TOPIC = 'odom'
+
+class OpenMVCamNode:
+
+    def __init__(self):
+
+        rospy.init_node('{}_node'.format(CAMERA_NAME), argv=sys.argv)
+
+        self.device = '/dev/ttyACM0'
+
+        self.openmv_cam = OpenMVCam(self.device)
+        self.seq = 0
+
+    def read_and_publish_odom(self):
+
+        # Read image from camera
+        odom = self.openmv_cam.read_odom()
+        rospy.loginfo("{ x : %d , y : %d }" % (odom[0], odom[1])
+
+
+def main():
+
+    openmv_cam_node = OpenMVCamNode()
+    r =rospy.Rate(30)
+    while not rospy.is_shutdown():
+        openmv_cam_node.read_and_publish_odom()
+        r.sleep()
+
+
+if __name__ == '__main__':
+    main()
