@@ -4,12 +4,12 @@ from arion.offboard import OffboardControl
 from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import PositionTarget
 
-class PositionControlNode(OffboardControl):
+class PositionControlRawNode(OffboardControl):
 
     def __init__(self):
-        self.message_pub = rospy.Publisher('mavros/setpoint_position/local', PoseStamped, queue_size=10)
+        self.message_pub = rospy.Publisher('mavros/setpoint_raw/local', PositionTarget, queue_size=10)
         self.message_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.position_callback)
-        self.goto_target = PoseStamped()
+        self.goto_target = PositionTarget()
         self.current_poste = PoseStamped()
         self.seq = 0
         self.start_offboard()
@@ -17,13 +17,21 @@ class PositionControlNode(OffboardControl):
         self.x = 0.0
         self.y = 0.0
         self.z = 0.0
+        self.target_mask = PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
+                            + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
+                            + PositionTarget.FORCE
+        self.mask = self.target_mask
 
     def publish_position_message(self, x, y, z, mask):
         self.goto_target.header.stamp = rospy.Time.now()
         self.goto_target.header.seq = self.seq
-        self.goto_target.pose.position.x = x
-        self.goto_target.pose.position.y = y
-        self.goto_target.pose.position.y = z
+        self.goto_target.coordinate_frame = PositionTarget.FRAME_BODY_OFFSET_NED
+        self.goto_target.position.x = x
+        self.goto_target.position.y = y
+        self.goto_target.position.y = z
+        self.goto_target.type_mask = mask
+        self.goto_target.yaw = 0
+        self.goto_target.yaw_rate = 0
         self.message_pub.publish(self.goto_target)
         self.seq = self.seq + 1
 
