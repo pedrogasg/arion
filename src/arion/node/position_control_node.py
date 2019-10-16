@@ -19,7 +19,7 @@ class PositionControlNode(OffboardControl):
         self.z = 0.0
         self.target_mask = PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
                             + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
-                            + PositionTarget.FORCE + PositionTarget.IGNORE_YAW + PositionTarget.IGNORE_YAW_RATE
+                            + PositionTarget.FORCE
         self.mask = self.target_mask
 
     def publish_position_message(self, x, y, z, mask):
@@ -30,6 +30,8 @@ class PositionControlNode(OffboardControl):
         self.goto_target.position.y = y
         self.goto_target.position.y = z
         self.goto_target.type_mask = mask
+        self.goto_target.yaw = 0
+        self.goto_target.yaw_rate = 0
         self.message_pub.publish(self.goto_target)
         self.seq = self.seq + 1
 
