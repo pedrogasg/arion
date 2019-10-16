@@ -32,15 +32,16 @@ class PositionControlNode(OffboardControl):
     def position_publish():
         self.publish_position_message(self.x, self.y, self.z)
 
+    @staticmethod
     def smooth(now, prev, factor):
         return factor * now + (1.0 - factor) * prev
 
     def warm_position(self, rate):
          for i in range(100):
              p = self.current_poste.pose.position
-             self.x = smooth(self.x, p.x, self.smooth_factor)
-             self.y = smooth(self.y, p.y, self.smooth_factor)
-             self.z = smooth(self.z, p.z, self.smooth_factor)
+             self.x = PositionControlNode.smooth(self.x, p.x, self.smooth_factor)
+             self.y = PositionControlNode.smooth(self.y, p.y, self.smooth_factor)
+             self.z = PositionControlNode.smooth(self.z, p.z, self.smooth_factor)
              self.position_publish()
              rate.sleep()
         
