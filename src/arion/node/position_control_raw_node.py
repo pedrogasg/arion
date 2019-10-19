@@ -31,7 +31,7 @@ class PositionControlRawNode(OffboardControl):
         self.goto_target.position.y = z
         self.goto_target.type_mask = mask
         self.goto_target.yaw = 0
-        self.goto_target.yaw_rate = 0
+        self.goto_target.yaw_rate = 1
         self.message_pub.publish(self.goto_target)
         self.seq = self.seq + 1
 
@@ -48,9 +48,9 @@ class PositionControlRawNode(OffboardControl):
     def warm_position(self, rate):
          for i in range(100):
              p = self.current_poste.pose.position
-             self.x = PositionControlNode.smooth(self.x, p.x, self.smooth_factor)
-             self.y = PositionControlNode.smooth(self.y, p.y, self.smooth_factor)
-             self.z = PositionControlNode.smooth(self.z, p.z, self.smooth_factor)
+             self.x = PositionControlRawNode.smooth(self.x, p.x, self.smooth_factor)
+             self.y = PositionControlRawNode.smooth(self.y, p.y, self.smooth_factor)
+             self.z = PositionControlRawNode.smooth(self.z, p.z, self.smooth_factor)
              self.position_publish()
              rate.sleep()
         
