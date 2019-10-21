@@ -53,5 +53,8 @@ class OffboardControl:
     def release_control(self, callback = None):
         if callback is not None:
             callback()
-        self.disarm()
-        self.manual()
+        try:
+            self.disarm()
+            self.manual()
+        except rospy.service.ServiceException:
+            rospy.loginfo("Unable to ealease service is already down")

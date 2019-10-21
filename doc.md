@@ -5,7 +5,7 @@ sudo chmod 666 /dev/ttyACM0
 
 nohup roscore &>/dev/null &
 
-nohup roslaunch mavros px4.launch fcu_url:=/dev/ttyACM0:921600 gcs_url:=udp://@172.32.65.150 &>/dev/null &
+nohup roslaunch mavros px4.launch fcu_url:=/dev/ttyACM0:921600 gcs_url:=udp://@172.32.65.174 &>/dev/null &
 
 nohup roslaunch realsense2_camera rs_t265.launch &>/dev/null &
 
@@ -22,8 +22,9 @@ CAL_MAG_EN1
 
 sudo chmod 666 /dev/ttyTHS1
 
-nohup roslaunch mavros px4.launch fcu_url:=/dev/ttyTHS1:921600 gcs_url:=udp://@192.168.1.48 &>/dev/null &
+nohup roslaunch mavros px4.launch fcu_url:=/dev/ttyTHS1:921600 gcs_url:=udp://@172.32.65.174 &>/dev/null &
 sudo chmod 666 /dev/ttyTHS1
+nohup roslaunch arion rs_odom_px4.launch &>/dev/null &
 NOW=`date +%d-%m-%Y_%I-%M-%S`
 nohup roslaunch arion recorder.launch now:=$NOW & 
 
@@ -38,3 +39,4 @@ python export_rc_in.py ./rc-10-10-2019_10-10-51.bag ./rc /mavros/rc/in
 
 
 rover_pos_control stop
+nohup roslaunch mavros px4.launch fcu_url:=/dev/ttyTHS1:921600 gcs_url:=udp://@192.168.1.48 &>/dev/null &
