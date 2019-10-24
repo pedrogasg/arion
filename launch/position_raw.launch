@@ -1,0 +1,16 @@
+<launch>
+    <arg name="fcu_url" default="/dev/ttyTHS1:921600" />
+    <arg name="gcs_url" default="udp://@192.168.1.48" />   <!-- GCS link is provided by SITL -->
+
+  <!-- Launch MavROS -->
+    <include file="$(find mavros)/launch/px4.launch">
+        <arg name="fcu_url" value="$(arg fcu_url)" />
+        <arg name="gcs_url" value="$(arg gcs_url)" />
+    </include>
+
+  <!-- Launch camera -->
+    <include file="$(find arion)/launch/rs_odom_px4.launch" />
+
+    <node pkg="arion" type="move_position_raw" name="arion_move_position_raw" />
+
+</launch>

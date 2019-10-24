@@ -7,7 +7,7 @@ from mavros_msgs.msg import ActuatorControl
 
 class ActuatorControlNode(OffboardControl, YawControl, SpeedControl):
     _ACTUATORS_ = 8
-    _THOTTLE_ = 3
+    _THOTTLE_ = 2
     _STEARING_ = 3
 
     def __init__(self):

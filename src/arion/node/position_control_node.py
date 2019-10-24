@@ -1,49 +1,35 @@
 #!/usr/bin/env python3
 import rospy
 from arion.offboard import OffboardControl
+from arion.point_subscriber import PointSubscriber
+from arion.position_subscriber import CurrentPositionSubscriber
 from geometry_msgs.msg import PoseStamped
-from mavros_msgs.msg import PositionTarget
 
-class PositionControlNode(OffboardControl):
+class PositionControlNode(OffboardControl, CurrentPositionSubscriber, PointSubscriber):
 
     def __init__(self):
+        topic_in = rospy.get_param('~raw_point_topic', '/arion/position_point')
+        self.rate = rospy.get_param('~raw_point_rate', 20)
         self.message_pub = rospy.Publisher('mavros/setpoint_position/local', PoseStamped, queue_size=10)
-        self.message_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.position_callback)
-        self.goto_target = PoseStamped()
-        self.current_poste = PoseStamped()
+        self.target_position = PoseStamped()
         self.seq = 0
+        self.start_point(topic_in)
         self.start_offboard()
+        self.start_current_position()
         self.smooth_factor = 0.9
-        self.x = 0.0
-        self.y = 0.0
-        self.z = 0.0
 
-    def publish_position_message(self, x, y, z):
-        self.goto_target.header.stamp = rospy.Time.now()
-        self.goto_target.header.seq = self.seq
-        self.goto_target.pose.position.x = x
-        self.goto_target.pose.position.y = y
-        self.goto_target.pose.position.y = z
-        self.message_pub.publish(self.goto_target)
+    def publish_position_message(self):
+        self.target_position.header.stamp = rospy.Time.now()
+        self.target_position.header.seq = self.seq
+        self.target_position.pose.position = self.p
+        self.message_pub.publish(self.target_position)
         self.seq = self.seq + 1
-
-    def position_callback(self, msg):
-        self.current_poste = msg
-
-    def position_publish(self):
-        self.publish_position_message(self.x, self.y, self.z)
-
-    @staticmethod
-    def smooth(now, prev, factor):
-        return factor * now + (1.0 - factor) * prev
 
     def warm_position(self, rate):
          for i in range(100):
-             p = self.current_poste.pose.position
-             self.x = PositionControlNode.smooth(self.x, p.x, self.smooth_factor)
-             self.y = PositionControlNode.smooth(self.y, p.y, self.smooth_factor)
-             self.z = PositionControlNode.smooth(self.z, p.z, self.smooth_factor)
-             self.position_publish()
+             p = self.current_position.pose.position
+             self.smooth_point(p.x, p.y, p.z, self.smooth_factor)
+             self.publish_position_message()
              rate.sleep()
         
     def run(self):
