@@ -28,7 +28,9 @@ class PositionControlRawNode(OffboardControl, CurrentPositionSubscriber, PointSu
         self.target_position.header.seq = self.seq
         self.target_position.header.frame_id = "enu_world"
         self.target_position.coordinate_frame = PositionTarget.FRAME_LOCAL_NED
-        self.target_position.position = self.p
+        self.target_position.position.x = self.p.x
+        self.target_position.position.y = self.p.y
+        self.target_position.position.z = self.p.z
         self.target_position.type_mask = self.mask
         self.target_position.yaw = 0
         self.target_position.yaw_rate = 1
