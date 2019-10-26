@@ -1,12 +1,11 @@
 import rospy
 
-from arion.offboard import OffboardControl
-from arion.point_subscriber import PointSubscriber
-from arion.position_subscriber import CurrentPositionSubscriber
-
 from mavros_msgs.msg import PositionTarget
 from geometry_msgs.msg import PoseStamped, Point
 
+from arion.offboard import OffboardControl
+from arion.subscriber.point_subscriber import PointSubscriber
+from arion.subscriber.position_subscriber import CurrentPositionSubscriber
 
 class PositionControlRawNode(OffboardControl, CurrentPositionSubscriber, PointSubscriber):
 

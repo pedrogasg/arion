@@ -1,9 +1,10 @@
-#!/usr/bin/env python3
 import rospy
-from arion.offboard import OffboardControl
-from arion.point_subscriber import PointSubscriber
-from arion.position_subscriber import CurrentPositionSubscriber
+
 from geometry_msgs.msg import PoseStamped
+
+from arion.offboard import OffboardControl
+from arion.subscriber.point_subscriber import PointSubscriber
+from arion.subscriber.position_subscriber import CurrentPositionSubscriber
 
 class PositionControlNode(OffboardControl, CurrentPositionSubscriber, PointSubscriber):
 

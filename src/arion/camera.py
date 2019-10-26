@@ -4,8 +4,6 @@ import traitlets
 import threading
 import numpy as np
 
-
-
 class GStreamerCamera(traitlets.HasTraits):
 
     value = traitlets.Any()
