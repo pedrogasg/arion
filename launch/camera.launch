@@ -1,0 +1,13 @@
+<launch>
+    <arg name="camera_out_topic" default="/arion/image_compressed"/>
+    <arg name="camera_rate" default="60"/>
+    <arg name="camera_witdh" default="410"/>
+    <arg name="camera_height" default="308"/>
+
+    <node pkg="arion" type="camera" name="arion_camera" >
+        <rosparam param="camera_out_topic" subst_value="True">$(arg camera_out_topic)</rosparam>
+        <rosparam param="camera_rate" subst_value="True">$(arg camera_rate)</rosparam>
+        <rosparam param="camera_witdh" subst_value="True">$(arg camera_witdh)</rosparam>
+        <rosparam param="camera_height" subst_value="True">$(arg camera_height)</rosparam>
+    </node>
+</launch>

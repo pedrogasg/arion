@@ -10,5 +10,10 @@ catkin_package(
   CATKIN_DEPENDS message_runtime
 )
 
-catkin_install_python(PROGRAMS bin/predict_stearing
+catkin_install_python(PROGRAMS 
+  bin/predict_stearing
+  bin/move_position
+  bin/camera
+  bin/path_viz
+  bin/move_actuator
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

@@ -1,10 +1,10 @@
 #! /usr/bin/env python3
 import rospy
-from arion.node.stearing_node import StearingNode
+from arion.node.position_control_node import PositionControlNode
 
 if __name__ == '__main__':
     try:
-        node = StearingNode()
+        node = PositionControlNode()
         node.run()
     except rospy.ROSInterruptException:
         pass
