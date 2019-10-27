@@ -10,6 +10,7 @@ from arion.subscriber.position_subscriber import CurrentPositionSubscriber
 class DirectionRegulatorNode(RCSubscriber, CurrentPositionSubscriber, OffboardControl):
 
     def __init__(self):
+        self.seq = 0
         self.rate = rospy.get_param('~regulator_rate', 20)
         self.message_pub = rospy.Publisher('/mavros/actuator_control', ActuatorControl, queue_size=1)
         self.actuator_control_message = ActuatorControl()
