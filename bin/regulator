@@ -1,0 +1,10 @@
+#! /usr/bin/env python3
+import rospy
+from arion.node.direction_regulator_node import DirectionRegulatorNode
+
+if __name__ == '__main__':
+    try:
+        node = DirectionRegulatorNode()
+        node.run()
+    except rospy.ROSInterruptException:
+        pass
