@@ -1,4 +1,5 @@
 import rospy
+import numpy as np
 from mavros_msgs.msg import RCIn
 
 class RCSubscriber:
