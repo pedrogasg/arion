@@ -1,8 +1,8 @@
 from geometry_msgs.msg import Point
 
-_PWM_MAX_ = 2000
-_PWM_ZERO_ = 1500
-_PWM_MIN_ = 900
+_PWM_MAX_ = 2006
+_PWM_ZERO_ = 1494
+_PWM_MIN_ = 982
 
 _MAX_ = 1
 _MIN_ = -1

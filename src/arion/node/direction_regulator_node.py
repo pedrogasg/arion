@@ -1,13 +1,16 @@
 import rospy
 import numpy as np
+
+from geometry_msgs.msg import Point
+
 from mavros_msgs.msg import ActuatorControl
 
 from arion.offboard import OffboardControl
 from arion.subscriber.rc_subscriber import RCSubscriber
-from arion.subscriber.position_subscriber import CurrentPositionSubscriber
+from arion.subscriber.state_subscriber import State2DSubscriber
 from arion.tools import _RC_THOTTLE_, _RC_STEARING_, _ACTUATORS_, _THOTTLE_, _STEARING_, map_from_pwm
 
-class DirectionRegulatorNode(RCSubscriber, CurrentPositionSubscriber, OffboardControl):
+class DirectionRegulatorNode(RCSubscriber, State2DSubscriber, OffboardControl):
 
     def __init__(self):
         self.seq = 0
@@ -15,6 +18,7 @@ class DirectionRegulatorNode(RCSubscriber, CurrentPositionSubscriber, OffboardCo
         self.steering = 0.0
         self.rate = rospy.get_param('~regulator_rate', 20)
         self.message_pub = rospy.Publisher('/mavros/actuator_control', ActuatorControl, queue_size=1)
+        self.state_pub = rospy.Publisher('/arion/state', Point, queue_size=1)
         self.actuator_control_message = ActuatorControl()
         self.start_offboard()
         self.start_current_position()
@@ -34,6 +38,8 @@ class DirectionRegulatorNode(RCSubscriber, CurrentPositionSubscriber, OffboardCo
         self.actuator_control_message.controls = self.inputs
         self.message_pub.publish(self.actuator_control_message)
         self.seq = self.seq + 1
+        self.state_pub.publish(self.state)
+
 
     def warm_position(self, rate):
          for i in range(100):
