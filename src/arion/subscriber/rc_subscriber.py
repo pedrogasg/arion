@@ -10,4 +10,4 @@ class RCSubscriber:
         self.rc_subscriber = rospy.Subscriber("mavros/rc/in", RCIn, self.update_rc, queue_size=1)
 
     def update_rc(self, rc):
-        self.channels = rc.channels
+        self.channels = np.array(rc.channels)
