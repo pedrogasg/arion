@@ -21,7 +21,7 @@ class DirectionRegulatorNode(RCSubscriber, CurrentPositionSubscriber, OffboardCo
         self.actuator_control_message.header.stamp = rospy.Time.now()
         self.actuator_control_message.header.seq = self.seq
         self.actuator_control_message.group_mix = ActuatorControl.PX4_MIX_FLIGHT_CONTROL
-        self.actuator_control_message.controls = self.channels
+        self.actuator_control_message.controls = (self.channels / RCSubscriber._ZERO_) - 1
         self.message_pub.publish(self.actuator_control_message)
         self.seq = self.seq + 1
 
