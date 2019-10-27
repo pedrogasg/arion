@@ -35,7 +35,7 @@ class PositionControlNode(OffboardControl, CurrentPositionSubscriber, PointSubsc
         
     def run(self):
         rospy.init_node('control_arion', anonymous=True, log_level= rospy.INFO)
-        r = rospy.Rate(20)
+        r = rospy.Rate(self.rate)
         self.warm_position(r)
         self.take_control(self.position_publish)
         while not rospy.is_shutdown():
