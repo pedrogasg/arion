@@ -1,7 +1,9 @@
 import math
 import rospy
+
 from geometry_msgs.msg import Point
 
+from arion.subscriber.position_subscriber import CurrentPositionSubscriber
 
 class State2DSubscriber(CurrentPositionSubscriber):
     def start_2d_state(self):
