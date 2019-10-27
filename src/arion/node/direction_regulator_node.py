@@ -5,7 +5,7 @@ from mavros_msgs.msg import ActuatorControl
 from arion.offboard import OffboardControl
 from arion.subscriber.rc_subscriber import RCSubscriber
 from arion.subscriber.position_subscriber import CurrentPositionSubscriber
-
+from arion.tools import _RC_THOTTLE_, _RC_STEARING_, _ACTUATORS_, _THOTTLE_, _STEARING_, map_from_pwm
 
 class DirectionRegulatorNode(RCSubscriber, CurrentPositionSubscriber, OffboardControl):
 
@@ -17,12 +17,19 @@ class DirectionRegulatorNode(RCSubscriber, CurrentPositionSubscriber, OffboardCo
         self.start_offboard()
         self.start_current_position()
         self.start_rc()
+        self.inputs = np.zeros(_ACTUATORS_)
+
+    def update_rc(self, rc):
+        self.throtle = map_from_pwm(rc.channels[_RC_THOTTLE_])
+        self.steering = map_from_pwm(rc.channels[_RC_STEARING_])
 
     def publish_actuator_message(self):
+        self.inputs[_THOTTLE_] = self.throtle
+        self.inputs[_STEARING_] = self.steering
         self.actuator_control_message.header.stamp = rospy.Time.now()
         self.actuator_control_message.header.seq = self.seq
         self.actuator_control_message.group_mix = ActuatorControl.PX4_MIX_FLIGHT_CONTROL
-        self.actuator_control_message.controls = list((self.channels[:8] / RCSubscriber._ZERO_) - 1)
+        self.actuator_control_message.controls = self.inputs
         self.message_pub.publish(self.actuator_control_message)
         self.seq = self.seq + 1
 

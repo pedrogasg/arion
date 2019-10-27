@@ -1,14 +1,15 @@
 import rospy
 import numpy as np
+
 from arion.yaw_control import YawControl
-from arion.speed_control import SpeedControl
 from arion.offboard import OffboardControl
+from arion.speed_control import SpeedControl
+from arion.tools import _STEARING_, _THOTTLE_, _ACTUATORS_
+
 from mavros_msgs.msg import ActuatorControl
 
+
 class ActuatorControlNode(OffboardControl, YawControl, SpeedControl):
-    _ACTUATORS_ = 8
-    _THOTTLE_ = 2
-    _STEARING_ = 3
 
     def __init__(self):
         self.message_pub = rospy.Publisher('/mavros/actuator_control', ActuatorControl, queue_size=1)

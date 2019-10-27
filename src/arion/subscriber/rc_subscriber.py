@@ -1,12 +1,13 @@
 import rospy
 import numpy as np
+
+from arion.tools import _PWM_ZERO_, _ACTUATORS_
+
 from mavros_msgs.msg import RCIn
 
 class RCSubscriber:
-    _ACTUATORS_ = 8
-    _ZERO_ = 1500
     def start_rc(self):
-        self.channels = np.ones(RCSubscriber._ACTUATORS_) * RCSubscriber._ZERO_
+        self.channels = np.ones(_ACTUATORS_) * _PWM_ZERO_
         self.rc_subscriber = rospy.Subscriber("mavros/rc/in", RCIn, self.update_rc, queue_size=1)
 
     def update_rc(self, rc):
