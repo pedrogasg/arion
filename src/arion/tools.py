@@ -10,8 +10,8 @@ _MIN_ = -1
 _RC_THOTTLE_ = 0
 _RC_STEARING_ = 1
 
-_THOTTLE_ = 2
-_STEARING_ = 3
+_THOTTLE_ = 3
+_STEARING_ = 2
 
 _ACTUATORS_ = 8
 
