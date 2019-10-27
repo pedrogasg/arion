@@ -31,6 +31,7 @@ class DirectionRegulatorNode(RCSubscriber, CurrentPositionSubscriber, OffboardCo
              rate.sleep()
 
     def run(self):
+        rospy.init_node('regulator_arion', anonymous=True, log_level= rospy.INFO)
         r = rospy.Rate(self.rate)
         self.warm_position(r)
         self.take_control(self.publish_actuator_message)
