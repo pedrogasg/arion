@@ -21,7 +21,7 @@ class DirectionRegulatorNode(RCSubscriber, State2DSubscriber, OffboardControl):
         self.state_pub = rospy.Publisher('/arion/state', Point, queue_size=1)
         self.actuator_control_message = ActuatorControl()
         self.start_offboard()
-        self.start_current_position()
+        self.start_2d_state()
         self.start_rc()
         self.inputs = np.zeros(_ACTUATORS_)
 
