@@ -18,8 +18,7 @@ class PositionControl2DNode(OffboardControl, WaypointControl):
         self.seq = 1
         self.start_offboard()
         self.start_waypoint()
-        self.smooth_factor = 0.9
-        self.mask = PositionControlRawNode.LOITER
+        self.mask = PositionControl2DNode.IDLE
 
     def publish_position_message(self):
         self.target_position.header.stamp = rospy.Time.now()
@@ -36,7 +35,6 @@ class PositionControl2DNode(OffboardControl, WaypointControl):
     def warm_position(self, rate):
          for i in range(100):
              p = self.current_position.pose.position
-             self.smooth_point(p.x, p.y, p.z, self.smooth_factor)
              self.publish_position_message()
              rate.sleep()
         
@@ -46,7 +44,7 @@ class PositionControl2DNode(OffboardControl, WaypointControl):
         self.warm_position(r)
         self.take_control(self.publish_position_message)
         while not rospy.is_shutdown():
-            self.mask = PositionControl2DNode.LOITER if self.at_destination else PositionControl2DNode.IDLE
+            self.mask = PositionControl2DNode.LOITER if not self.at_destination else PositionControl2DNode.IDLE
             self.publish_position_message()
             r.sleep()
         self.release_control()

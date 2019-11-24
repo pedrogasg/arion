@@ -15,7 +15,7 @@ class WaypointControl(State2DSubscriber):
         self.waypoints = list()
         with open(filepath) as fp:
             for line in fp:
-                waypoints.append(tuple(map(lambda x: float(x), line.split(','))))
+                self.waypoints.append(tuple(map(lambda x: float(x), line.split(','))))
         self.start_2d_state(self.state_update)
         self.started = False
         self.at_destination = False
@@ -23,14 +23,16 @@ class WaypointControl(State2DSubscriber):
         self.started = True
 
     def state_update(self):
-        if self.started and not self.at_destination and self.distance < self.get_distance():
+        rospy.loginfo("Current distance to waypoint %f", self.get_distance())
+        if self.started and not self.at_destination and self.distance > self.get_distance():
             if len(self.waypoints) > 0 :
                 self.current_waypoint = self.get_next_waypoint()
             else :
+                rospy.loginfo("Destination achived !")
                 self.at_destination = True
                 
     def get_next_waypoint(self):
-        cw = self.waypoints.pop()
+        cw = self.waypoints.pop(0)
         if self.loop:
             self.waypoints.insert(0, cw)
         return point(cw[0],cw[1],0)

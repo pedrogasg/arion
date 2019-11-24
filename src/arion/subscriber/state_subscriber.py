@@ -9,7 +9,7 @@ class State2DSubscriber(CurrentPositionSubscriber):
     def start_2d_state(self, cb):
         self.state = Pose2D()
         self.start_current_position()
-        self.cb
+        self.cb = cb
 
     def update_current_position(self, pose):
         super().update_current_position(pose)
