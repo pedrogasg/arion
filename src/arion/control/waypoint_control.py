@@ -5,7 +5,7 @@ from geometry_msgs.msg import PoseStamped, Point
 
 from arion.tools import point, distance2D
 
-from arion.subscriber.point_subscriber import State2DSubscriber
+from arion.subscriber.state_subscriber import State2DSubscriber
 
 class WaypointControl(State2DSubscriber):
 

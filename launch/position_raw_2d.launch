@@ -17,7 +17,7 @@
     <node pkg="arion" type="move_position_2d" name="arion_move_position_2d" >
       <rosparam param="waypoint_file" subst_value="True">$(arg waypoint_file)</rosparam>
       <rosparam param="loop" subst_value="True">$(arg loop)</rosparam>
-      <rosparam param="distance" subst_value="True">$(arg waypoint_file)</rosparam>
+      <rosparam param="distance" subst_value="True">$(arg distance)</rosparam>
     </node>
 
 </launch>
