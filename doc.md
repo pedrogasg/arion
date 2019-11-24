@@ -22,7 +22,7 @@ CAL_MAG_EN1
 
 sudo chmod 666 /dev/ttyTHS1
 
-nohup roslaunch mavros px4.launch fcu_url:=/dev/ttyTHS1:921600 gcs_url:=udp://@172.32.65.174 &>/dev/null &
+nohup roslaunch mavros px4.launch fcu_url:=/dev/ttyTHS1:921600 gcs_url:=udp://@192.168.1.48 &>/dev/null &
 sudo chmod 666 /dev/ttyTHS1
 nohup roslaunch arion rs_odom_px4.launch &>/dev/null &
 NOW=`date +%d-%m-%Y_%I-%M-%S`
@@ -39,4 +39,37 @@ python export_rc_in.py ./rc-10-10-2019_10-10-51.bag ./rc /mavros/rc/in
 
 
 rover_pos_control stop
-nohup roslaunch mavros px4.launch fcu_url:=/dev/ttyTHS1:921600 gcs_url:=udp://@192.168.1.48 &>/dev/null &
+nohup roslaunch mavros px4.launch fcu_url:=/dev/ttyTHS1:921600 gcs_url:=udp://@172.32.66.43  &>/dev/null &
+
+nohup roslaunch arion position_raw.launch &>/dev/null &
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: 6.0, y: 3.2, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: 0.0, y: 1.0, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: 0.0, y: 3.2, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: 3.0, y: 3.0, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: -3.0, y: 3.0, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: 3.0, y: 0.0, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: 4.8, y: 0.0, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: 4.8, y: 3.8, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: -2.6, y: 3.8, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: -2.6, y: 1.6, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: 6.0, y: 1.6, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: 0.0, y: 12.2, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: -2.0, y: 12.4, z: 0.0}"
+
+rostopic pub /arion/raw_point geometry_msgs/Point "{x: -4.0, y: 4.8, z: 0.0}"
+position_raw_mv
+
+nohup roslaunch arion position_raw_mv.launch &>/dev/null &

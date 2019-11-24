@@ -5,20 +5,19 @@ from geometry_msgs.msg import PoseStamped, Point
 
 from arion.offboard import OffboardControl
 from arion.subscriber.point_subscriber import PointSubscriber
-from arion.subscriber.position_subscriber import CurrentPositionSubscriber
+from arion.control.waypoint_control import WaypointControl
 
-class PositionControlRawNode(OffboardControl, CurrentPositionSubscriber, PointSubscriber):
+class PositionControl2DNode(OffboardControl, WaypointControl):
 
     LOITER = 12288 + 448
+    IDLE = 16384
     def __init__(self):
-        topic_in = rospy.get_param('~raw_point_topic', '/arion/raw_point')
         self.rate = rospy.get_param('~raw_point_rate', 20)
         self.message_pub = rospy.Publisher('mavros/setpoint_raw/local', PositionTarget, queue_size=10)
         self.target_position = PositionTarget()
         self.seq = 1
-        self.start_point(topic_in)
         self.start_offboard()
-        self.start_current_position()
+        self.start_waypoint()
         self.smooth_factor = 0.9
         self.mask = PositionControlRawNode.LOITER
 
@@ -27,7 +26,7 @@ class PositionControlRawNode(OffboardControl, CurrentPositionSubscriber, PointSu
         self.target_position.header.seq = self.seq
         self.target_position.header.frame_id = "enu_world"
         self.target_position.coordinate_frame = PositionTarget.FRAME_LOCAL_NED
-        self.target_position.position = self.p
+        self.target_position.position = self.current_waypoint
         self.target_position.type_mask = self.mask
         self.target_position.yaw = 0
         self.target_position.yaw_rate = 1
@@ -47,6 +46,7 @@ class PositionControlRawNode(OffboardControl, CurrentPositionSubscriber, PointSu
         self.warm_position(r)
         self.take_control(self.publish_position_message)
         while not rospy.is_shutdown():
+            self.mask = PositionControl2DNode.LOITER if self.at_destination else PositionControl2DNode.IDLE
             self.publish_position_message()
             r.sleep()
         self.release_control()

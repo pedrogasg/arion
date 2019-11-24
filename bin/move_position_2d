@@ -1,0 +1,10 @@
+#! /usr/bin/env python3
+import rospy
+from arion.node.position_control_2d_node import PositionControl2DNode
+
+if __name__ == '__main__':
+    try:
+        node = PositionControl2DNode()
+        node.run()
+    except rospy.ROSInterruptException:
+        pass

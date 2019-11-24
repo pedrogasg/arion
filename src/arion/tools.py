@@ -31,3 +31,6 @@ def map(x, in_min, in_max, out_min, out_max):
 
 def map_from_pwm(x):
     return map(x, _PWM_MIN_, _PWM_MAX_, _MIN_, _MAX_)
+
+def distance2D(x1, y1, x2, y2):
+    ((x2 - x1) ** 2.0 + (y2 - y1) ** 2.0) ** (0.5)

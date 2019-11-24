@@ -1,0 +1,23 @@
+<launch>
+    <arg name="waypoint_file" default="$(find arion)/config.waypoints.csv" />
+    <arg name="loop" default="False" />
+    <arg name="distance" default="0.40" />
+    <arg name="fcu_url" default="/dev/ttyTHS1:921600" />
+    <arg name="gcs_url" default="udp://@192.168.1.48" />   <!-- GCS link is provided by SITL -->
+
+  <!-- Launch MavROS -->
+    <include file="$(find mavros)/launch/px4.launch">
+        <arg name="fcu_url" value="$(arg fcu_url)" />
+        <arg name="gcs_url" value="$(arg gcs_url)" />
+    </include>
+
+  <!-- Launch camera -->
+    <include file="$(find arion)/launch/rs_odom_px4.launch" />
+
+    <node pkg="arion" type="move_position_2d" name="arion_move_position_2d" >
+      <rosparam param="waypoint_file" subst_value="True">$(arg waypoint_file)</rosparam>
+      <rosparam param="loop" subst_value="True">$(arg loop)</rosparam>
+      <rosparam param="distance" subst_value="True">$(arg waypoint_file)</rosparam>
+    </node>
+
+</launch>
