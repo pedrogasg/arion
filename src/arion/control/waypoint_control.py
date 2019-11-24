@@ -1,7 +1,6 @@
 import rospy
 
-from mavros_msgs.msg import PositionTarget
-from geometry_msgs.msg import PoseStamped, Point
+from geometry_msgs.msg import Point
 
 from arion.tools import point, distance2D
 
@@ -9,7 +8,7 @@ from arion.subscriber.state_subscriber import State2DSubscriber
 
 class WaypointControl(State2DSubscriber):
 
-    def __init__(self):
+    def start_waypoint(self):
         filepath = rospy.get_param('~waypoint_file', '')
         self.loop =  rospy.get_param('~loop', False)
         self.distance = rospy.get_param('~distance', 0.40)
@@ -19,10 +18,7 @@ class WaypointControl(State2DSubscriber):
                 waypoints.append(tuple(map(lambda x: float(x), line.split(','))))
         self.start_2d_state(self.state_update)
         self.started = False
-        self.current_waypoint = Point()
         self.at_destination = False
-
-    def start_waypoint(self):
         self.current_waypoint = self.get_next_waypoint()
         self.started = True
 
